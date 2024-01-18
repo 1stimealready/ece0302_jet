@@ -23,7 +23,6 @@ template <typename T> bool Bag<T>::add(const T& entry) {
   
   return true;
 }
-
 template <typename T> bool Bag<T>::remove(const T& entry) {
 
   if(size == 0) return false;
