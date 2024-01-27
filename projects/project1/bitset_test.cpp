@@ -17,6 +17,8 @@ TEST_CASE( "Test bitset construction with asString", "[bitset]" ) {
     REQUIRE(b.asString().compare("00000000") == 0);
 }
 
+
+
 TEST_CASE( "Test bitset construction size", "[bitset]" ) {
     Bitset b(64);
     std::string s(64, '0');
@@ -73,4 +75,35 @@ TEST_CASE( "Test combined", "[bitset]" ) {
         REQUIRE_FALSE(b.test(i + (1<<10)));
         REQUIRE(((b.test(i + (1<<11)) == true && s.at(i + (1<<11)) == '0') || (b.test(i + (1<<11)) == false && s.at(i + (1<<11)) == '1')));
     }
+}
+
+
+TEST_CASE("Accessing item outside of bounds", "[bitset]") {
+
+    Bitset b(100);
+
+    b.set(103);
+
+    REQUIRE_FALSE(b.good());
+
+}
+
+TEST_CASE("Modifying an invalid bitset", "[bitset]") {
+
+    Bitset b("100012010");
+
+    b.toggle(1);
+
+    REQUIRE_FALSE(b.good());
+    REQUIRE(b.test(1) == 0);
+
+}
+
+TEST_CASE("Comparing a non-zero bitset", "[bitset]") {
+
+    Bitset b("010010");
+
+    REQUIRE(b.asString().compare("010010") == 0);
+
+
 }
