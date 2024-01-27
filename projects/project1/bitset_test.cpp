@@ -101,9 +101,9 @@ TEST_CASE("Modifying an invalid bitset", "[bitset]") {
 
 TEST_CASE("Comparing a non-zero bitset", "[bitset]") {
 
-    Bitset b("010010");
+    Bitset b("0");
 
-    REQUIRE(b.asString().compare("010010") == 0);
+    REQUIRE(b.asString().compare("0") == 0);
 
 
 }

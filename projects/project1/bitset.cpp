@@ -46,13 +46,21 @@ Bitset::Bitset(const std::string & value) {
 
     for (int i = 0; i < bitArraySize; i++) {
 
-        if ((value[i] != '0') && (value[i] != '1')) {
+        if (value[i] == '0') {
 
-            isValid = false;
+            bitArray[i] = 0;
+
+        } else if (value[i] == '1') {
+
+            bitArray[i] = 1;
+
+        } else {
+
+            isValid = 0;
 
         }
 
-        bitArray[i] = value[i];
+    
 
     }
 
@@ -153,13 +161,12 @@ std::string Bitset::asString() const {
     for (int i = 0; i < bitArraySize; i++) {
 
         if (bitArray[i] == 0) {
-            outputString = outputString + '0';
+            outputString += '0';
         } else if (bitArray[i] == 1) {
-            outputString = outputString + '1';
+            outputString += '1';
         } else {
-            outputString = outputString + std::to_string(bitArray[i]);
+            outputString += std::to_string(bitArray[i]);
         }
-        
 
     }
 
