@@ -20,18 +20,38 @@ Bitset::Bitset() {
 Bitset::Bitset(intmax_t size_T) {
     // TODO - DONE
     
-    bitArraySize = size_T;
+   
 
-    bitArray = new uint8_t[bitArraySize];
+    if (size_T <= 0) {
 
-    for (int i = 0; i < bitArraySize; i++) {
+        bitArraySize = 8;
 
-        *(bitArray + i) = 0;
+        bitArray = new uint8_t[bitArraySize];
+
+        for (int i = 0; i < bitArraySize; i++) {
+
+            *(bitArray + i) = 0;
+
+        }
+
+        isValid = false;
+
+
+    } else {
+
+         bitArraySize = size_T;
+
+        bitArray = new uint8_t[bitArraySize];
+
+        for (int i = 0; i < bitArraySize; i++) {
+
+            *(bitArray + i) = 0;
+
+        }
+
+        isValid = true;
 
     }
-
-    isValid = true;
-
 
 
 }
