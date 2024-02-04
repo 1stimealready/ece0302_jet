@@ -36,7 +36,9 @@ public:
 
 private:
 
-  // TODO
+  T bagArray[maxsize];
+  size_t bagSize;
+
 };
 
 #include "limited_size_bag.tpp"

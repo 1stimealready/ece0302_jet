@@ -46,6 +46,10 @@ public:
 private:
 
   // TODO
+  T * bagArray;
+  size_t bagSize;
+
+
 };
 
 #include "dynamic_bag.tpp"
