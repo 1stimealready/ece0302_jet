@@ -46,7 +46,11 @@ public:
 
 private:
 
-  // TODO
+  //Dynamic Array
+  T *listArray;
+  
+  //Count of items
+  size_t listSize;
   
 };
 

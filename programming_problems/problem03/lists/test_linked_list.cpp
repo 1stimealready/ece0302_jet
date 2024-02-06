@@ -5,6 +5,39 @@
 
 template class LinkedList<int>;
 
+TEST_CASE( "Test default constructor", "[LinkedList]" ) {
+
+    LinkedList<int> list;
+
+    
+
+}
+
+TEST_CASE( "TODO", "[LinkedList]" ) {
+
+    LinkedList<int> list;
+}
+
+TEST_CASE( "TODO", "[LinkedList]" ) {
+
+    LinkedList<int> list;
+}
+
+TEST_CASE( "TODO", "[LinkedList]" ) {
+
+    LinkedList<int> list;
+}
+
+TEST_CASE( "TODO", "[LinkedList]" ) {
+
+    LinkedList<int> list;
+}
+
+TEST_CASE( "TODO", "[LinkedList]" ) {
+
+    LinkedList<int> list;
+}
+
 TEST_CASE( "TODO", "[LinkedList]" ) {
 
     LinkedList<int> list;

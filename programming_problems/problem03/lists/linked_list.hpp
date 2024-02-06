@@ -47,6 +47,11 @@ public:
 private:
 
   //TODO
+  Node<T> *headPtr;
+  Node<T> *tailPtr;
+
+  size_t length;
+
   
 };
 
