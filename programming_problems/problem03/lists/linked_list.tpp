@@ -15,16 +15,17 @@ LinkedList<T>::LinkedList()
 template <typename T>
 LinkedList<T>::~LinkedList()
 {
-  //TODO
   
   Node<T> * currentPtr = headPtr;
 
   Node<T> * nextPtr = nullptr;
 
-  while (currentPtr != nullptr) {
+  for (int i = 0; i < length; i++) {
 
     nextPtr = currentPtr->getNext();
+
     delete currentPtr;
+
     currentPtr = nextPtr;
 
   }
@@ -35,51 +36,16 @@ LinkedList<T>::~LinkedList()
 template <typename T>
 LinkedList<T>::LinkedList(const LinkedList<T>& x)
 {
+
+  headPtr = nullptr;
+  tailPtr = nullptr;
+  length = 0;
   
-  Node<T> * currentPtrInX = x.headPtr;
+  for (size_t i = 0; i < x.length; i++) {
 
-  Node<T> * currentPtrInThis = nullptr;
-
-  if (currentPtrInX != nullptr && currentPtrInX->getNext() != nullptr) {
-    
-    Node<T> * prevPtrInThis = new Node<T>(currentPtrInX->getItem()); //Create a new pointer in this with no next value
-
-    currentPtrInX = currentPtrInX->getNext(); //Progress to next pointer in X
-
-    currentPtrInThis = new Node<T>(currentPtrInX->getItem()); //Set current pointer in this to new value of X
-
-    prevPtrInThis->setNext(currentPtrInThis); //Link previous value in this to current value in this
-
-    headPtr = prevPtrInThis;
-
-
-    while(currentPtrInX->getNext() != nullptr) {
-
-      currentPtrInX = currentPtrInX->getNext(); //Advance pointer in X to the next in sequence
-
-      currentPtrInThis = new Node<T>(currentPtrInX->getItem()); //Create a new object for this with the value of the current item in X
-
-      prevPtrInThis = prevPtrInThis->getNext(); //Advance previous member of this to the most recently created item
-
-      prevPtrInThis->setNext(currentPtrInThis); //Link previous ptr in this with newly created object in this
-
-
-    }
-    
-
-  } else if (currentPtrInX != nullptr) { //Logic for if there is only one item in the linked list
-
-    currentPtrInThis = new Node<T>(currentPtrInX->getItem());
-
-    headPtr = currentPtrInThis;
+    insert(i, x.getEntry(i));
 
   }
-
-
-  tailPtr = currentPtrInThis;
-
-  length = x.length;
-
 
 
 }
@@ -117,6 +83,22 @@ std::size_t LinkedList<T>::getLength() const noexcept
 
   return length;
 
+  /*
+    Node<T> *currentPtr = headptr;
+
+    size_t count = 0;
+
+    while (currentPtr != nullptr) {
+
+      currentPtr = currentPtr->getNext();
+      count++;
+
+      return count;
+
+    }    
+
+  */
+
 
 }
 
@@ -127,31 +109,44 @@ bool LinkedList<T>::insert(std::size_t position, const T& item)
 
   if (position > length || position < 0) { return false; }
 
-  Node<T> *currentPtr = headPtr;
+  Node<T> *newNode = new Node<T>(item);
 
-  size_t currentPos = 0;
+  if (length == 0) { //Case if list is empty
 
-  while (currentPtr != nullptr) {
+    headPtr = newNode;
+    tailPtr = newNode;
 
-    if (currentPos == position) {
+  } else if (position == 0) { //Case where we are inserting to beginning of list
 
-      Node<T> * newNode = new Node<T>(item, currentPtr->getNext());
+    newNode->setNext(headPtr);
+    headPtr = newNode;  
 
-      currentPtr->setNext(newNode);
+  } else if (position == length) { //Case inserting at end of list
 
-      length++;
+    tailPtr->setNext(newNode);
+    tailPtr = newNode;
 
-      return true;
+  } else { //Case where position is inside of list
+
+    Node<T> *currentPtr = headPtr;
+
+    for (size_t i = 0; i < position - 1; i++) {
+
+      currentPtr = currentPtr->getNext();
 
     }
 
-    currentPos++;
+    Node<T> *nextPtr = currentPtr->getNext();
 
-    currentPtr = currentPtr->getNext();
+    currentPtr->setNext(newNode);
+
+    newNode->setNext(nextPtr);
 
   }
 
-  return false;
+  length++;
+
+  return true;
   
 }
 
@@ -160,10 +155,9 @@ bool LinkedList<T>::remove(std::size_t position)
 {
   if (position < 0 || position >= length) { return false; }
 
-  if (length == 1) {
+  if (length == 1) { //Case where there is only one item in list
 
     delete headPtr;
-
     headPtr = nullptr;
     tailPtr = nullptr;
 
@@ -171,38 +165,42 @@ bool LinkedList<T>::remove(std::size_t position)
 
     return true;
 
-  }
+  } else if (position == 0) { //Case where we are removing first item of list
 
-  Node<T> * currentPtr = headPtr->getNext();
-  Node<T> * prevPtr = headPtr;
-
-  if (position == 0) {
-
-    currentPtr =  headPtr->getNext();
-
+    Node<T> *tempPtr = headPtr->getNext();
     delete headPtr;
-
-    headPtr = currentPtr;
+    headPtr = tempPtr;
 
     length--;
 
     return true;
 
-  }
+  } else {
 
+    Node<T> *tempPtr = headPtr; //Case where we are removing an item in the middle of the list
 
+    for (int i = 0; i < position - 1; i++) {
 
-  size_t currentPos = 1;
+      tempPtr = tempPtr->getNext();
 
-  while (currentPtr != nullptr) {
+    }
 
-    if (currentPos == position) {
+    if (tempPtr->getNext() == tailPtr) { //If we are removing the item before tailPtr, we need to set tailPtr
 
-      currentPtr = currentPtr->getNext();
+      delete tailPtr;
+      tailPtr = tempPtr;
 
-      delete prevPtr->getNext();
+      length--;
 
-      prevPtr->setNext(currentPtr);
+      return true;
+
+    } else {
+
+      Node<T> *nextPtr = tempPtr->getNext()->getNext(); //Otherwise we get the item after next, so we can link it back without the removed object
+
+      delete tempPtr->getNext();
+
+      tempPtr->setNext(nextPtr);
 
       length--;
 
@@ -210,16 +208,7 @@ bool LinkedList<T>::remove(std::size_t position)
 
     }
 
-    
-
-    currentPos++;
-    currentPtr = currentPtr->getNext();
-
-    
-
   }
-  
-
   
   return false;
 
@@ -233,16 +222,19 @@ void LinkedList<T>::clear()
 
   Node<T> * nextPtr = nullptr;
 
-  while (currentPtr != nullptr) {
+  for (int i = 0; i < length; i++) {
 
     nextPtr = currentPtr->getNext();
+
     delete currentPtr;
+
     currentPtr = nextPtr;
 
   }
 
   headPtr = nullptr;
   tailPtr = nullptr;
+  length = 0;
 
 }
 
@@ -250,11 +242,33 @@ template <typename T>
 T LinkedList<T>::getEntry(std::size_t position) const
 {
   //TODO
-  return T();
+  if (position < 0 || position >= length) { return T(); }
+
+  Node<T> *currentPtr = headPtr;
+
+  for (int i = 0; i < position; i++) {
+
+    currentPtr = currentPtr->getNext();
+
+  }
+
+  return currentPtr->getItem();
+
+
 }
 
 template <typename T>
 void LinkedList<T>::setEntry(std::size_t position, const T& newValue)
 {
-  //TODO
+  if (position < 0 || position >= length) { return; }
+
+  Node<T> *currentPtr = headPtr;
+
+  for (int i = 0; i < position; i++) {
+
+    currentPtr = currentPtr->getNext();
+
+  }
+
+  currentPtr->setItem(newValue);
 }

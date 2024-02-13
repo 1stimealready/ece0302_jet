@@ -39,3 +39,40 @@ Node<ItemType>* Node<ItemType>::getNext() const
 {
    return next;
 } // end getNext
+
+
+
+
+
+
+
+/*
+template<class ItemType>
+class doubleLinkedNode {
+
+   private:
+      Node<T> *nextPtr;
+      Node<T> +prevPtr;
+      T data;
+
+   public:
+
+      doubleLinkedNode<T> *getNext();
+
+      T getItem();
+
+      doubleLinkedNode<T> *getPrev();
+
+      void setPrev(doubleLinkedList<T> *ptr);
+
+      void setItem(T item);
+
+      void setNext(doubleLinkedList<T> *ptr);
+
+
+
+};
+
+
+
+*/
