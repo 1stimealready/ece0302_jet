@@ -21,7 +21,6 @@ public:
   // copy assignment
   LinkedList& operator=(LinkedList x);
 
-  // swap
   void swap(LinkedList& x);
   
   // determine if a list is empty
@@ -48,6 +47,11 @@ public:
 private:
 
   //TODO
+  Node<T> *headPtr;
+  Node<T> *tailPtr;
+
+  size_t length;
+
   
 };
 
