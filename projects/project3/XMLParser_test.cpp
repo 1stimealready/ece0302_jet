@@ -42,6 +42,32 @@ TEST_CASE( "Test Stack push and size", "[ADT Stack]" )
 		}
 }
 
+
+TEST_CASE( "Test clear stack functionality", "[ADT Stack]" )
+{
+	INFO("Hint: testing Stack push()");
+	// Create a Stack to hold ints
+	Stack<int> intStack;
+	
+	for (int i = 0; i < 10; i ++) {
+
+		REQUIRE(intStack.size() == i);
+
+		intStack.push(i);
+
+
+	}
+
+	intStack.clear();
+
+	REQUIRE(intStack.size() == 0);
+
+	REQUIRE_THROWS(intStack.peek());
+
+}
+
+
+
 TEST_CASE( "Test XMLParser tokenizeInputString", "[XMLParser]" )
 {
 	   INFO("Hint: tokenize single element test of XMLParse");
@@ -118,6 +144,16 @@ TEST_CASE( "Test XMLParser tokenizeInputString Handout-0", "[XMLParser]" )
 			REQUIRE(result[i].tokenType == output[i].tokenType);
 			REQUIRE(result[i].tokenString.compare(output[i].tokenString) == 0);
 		}
+}
+
+TEST_CASE( "Test XMLParser Invalid text", "[XMLParser]" )
+{
+		// Create an instance of XMLParse
+		XMLParser myXMLParser;
+		
+		REQUIRE( !myXMLParser.tokenizeInputString("<test>stuff</test/>") );
+
+
 }
 
 
@@ -198,4 +234,220 @@ TEST_CASE( "Test XMLParser Final Handout-0", "[XMLParser]" )
 		REQUIRE(myXMLParser.frequencyElementName("size") == 6);
 		REQUIRE(myXMLParser.containsElementName("color_swatch"));
 		REQUIRE(myXMLParser.frequencyElementName("color_swatch") == 15);
+}
+
+
+TEST_CASE( "Test XMLParser on custom file", "[XMLParser]" )
+{
+
+		// Create an instance of XMLParse
+		XMLParser myXMLParser;
+		ifstream myfile ("./xmlFile.txt");
+		std::string inputString((std::istreambuf_iterator<char>(myfile) ), (std::istreambuf_iterator<char>()) );
+
+		bool success;
+		success = myXMLParser.tokenizeInputString(inputString);
+		bool parse = myXMLParser.parseTokenizedInput();
+		
+}
+
+
+TEST_CASE( "Test XMLTokenizer on invalid string with tag endings", "[XMLParser]" )
+{
+
+		// Create an instance of XMLParse
+		XMLParser myXMLParser;
+		
+		string inputString = "  *??.>  ";
+
+		REQUIRE(!myXMLParser.tokenizeInputString(inputString));
+
+		REQUIRE(!myXMLParser.parseTokenizedInput());
+
+		
+}
+
+TEST_CASE( "Test XMLTokenizer on tags with special characters inside of strings", "[XMLParser]" )
+{
+
+		// Create an instance of XMLParse
+		XMLParser myXMLParser;
+		
+		string inputString = "<tag def=\"????/////\">";
+
+		REQUIRE(myXMLParser.tokenizeInputString(inputString));
+
+		REQUIRE(!myXMLParser.parseTokenizedInput());
+
+		
+}
+
+TEST_CASE( "Test XMLTokenizer on tag with invalid start tag locations", "[XMLParser]" )
+{
+
+		// Create an instance of XMLParse
+		XMLParser myXMLParser;
+		
+		string inputString = "< tag <>";
+
+		REQUIRE(!myXMLParser.tokenizeInputString(inputString));
+
+		REQUIRE(!myXMLParser.parseTokenizedInput());
+
+		
+}
+
+TEST_CASE( "Test XMLTokenizer on tag that contains spaces", "[XMLParser]" )
+{
+
+		// Create an instance of XMLParse
+		XMLParser myXMLParser;
+		
+		string inputString = "   <            \n\n\n\n tag >      ";
+
+		REQUIRE(!myXMLParser.tokenizeInputString(inputString));
+
+		REQUIRE(!myXMLParser.parseTokenizedInput());
+
+		
+}
+
+TEST_CASE( "Test XMLTokenizer on tag that contains spaces only after tag", "[XMLParser]" )
+{
+
+		// Create an instance of XMLParse
+		XMLParser myXMLParser;
+		
+		string inputString = "   <tag >      ";
+
+		REQUIRE(myXMLParser.tokenizeInputString(inputString));
+
+		REQUIRE(!myXMLParser.parseTokenizedInput());
+
+		
+}
+
+TEST_CASE( "Test clear functionality", "[XMLParser]" )
+{
+
+		// Create an instance of XMLParse
+		XMLParser myXMLParser;
+		
+		string inputString = "<tag></tag>";
+
+		REQUIRE(myXMLParser.tokenizeInputString(inputString));
+
+		REQUIRE(myXMLParser.parseTokenizedInput());
+
+		myXMLParser.clear();
+
+		inputString = "<tag>Content</tag>";
+
+		REQUIRE(myXMLParser.tokenizeInputString(inputString));
+
+		REQUIRE(myXMLParser.parseTokenizedInput());
+		
+}
+
+TEST_CASE( "Test return tokenizedInput", "[XMLParser]" )
+{
+
+		// Create an instance of XMLParse
+		XMLParser myXMLParser;
+		
+		string inputString = "<tag></tag>";
+
+		REQUIRE(myXMLParser.tokenizeInputString(inputString));
+
+		REQUIRE(myXMLParser.parseTokenizedInput());
+
+		vector<TokenStruct> tokenizedVector = myXMLParser.returnTokenizedInput();
+		
+		REQUIRE(tokenizedVector[0].tokenString == "tag");
+		REQUIRE(tokenizedVector[1].tokenString == "tag");
+		
+}
+
+TEST_CASE( "Test containsElementName functionality", "[XMLParser]" )
+{
+
+		// Create an instance of XMLParse
+		XMLParser myXMLParser;
+		
+		string inputString = "<tag></tag>";
+
+		REQUIRE(myXMLParser.tokenizeInputString(inputString));
+
+		REQUIRE(myXMLParser.parseTokenizedInput());
+
+		REQUIRE(myXMLParser.containsElementName("tag"));
+		REQUIRE(!myXMLParser.containsElementName("nottag"));
+		
+}
+
+TEST_CASE( "Test frequencyElementName functionality", "[XMLParser]" )
+{
+
+		// Create an instance of XMLParse
+		XMLParser myXMLParser;
+		
+		string inputString = "<tag></tag>";
+
+		REQUIRE(myXMLParser.tokenizeInputString(inputString));
+
+		REQUIRE(myXMLParser.parseTokenizedInput());
+
+		REQUIRE(myXMLParser.frequencyElementName("tag") == 1);
+		REQUIRE(myXMLParser.frequencyElementName("nottag") == 0);
+		
+}
+
+TEST_CASE( "Test xml Parser on invalid strings", "[XMLParser]" )
+{
+
+		// Create an instance of XMLParse
+		XMLParser myXMLParser;
+		
+		string inputString = "<tag></tag><tag></tag>";
+
+		REQUIRE(myXMLParser.tokenizeInputString(inputString));
+
+		REQUIRE(!myXMLParser.parseTokenizedInput());
+
+		
+}
+
+TEST_CASE( "Test xml Parser on repeated entries", "[XMLParser]" )
+{
+
+		// Create an instance of XMLParse
+		XMLParser myXMLParser;
+		
+		string inputString = "<tag></tag>";
+
+		REQUIRE(myXMLParser.tokenizeInputString(inputString));
+
+		REQUIRE(myXMLParser.parseTokenizedInput());
+
+
+		myXMLParser.clear();
+		
+		inputString = "<tag><tag1></tag1></tag>";
+
+		REQUIRE(myXMLParser.tokenizeInputString(inputString));
+
+		REQUIRE(myXMLParser.parseTokenizedInput());
+}
+
+TEST_CASE("Test xml Parser on content outside of tags", "[XMLParser]" )
+{
+
+		// Create an instance of XMLParse
+		XMLParser myXMLParser;
+		
+		string inputString = "Content<tag></tag>";
+
+		REQUIRE(myXMLParser.tokenizeInputString(inputString));
+
+		REQUIRE(!myXMLParser.parseTokenizedInput());
 }

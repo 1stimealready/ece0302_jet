@@ -2,7 +2,6 @@
 #define CATCH_CONFIG_COLOUR_NONE
 #include "catch.hpp"
 #include "FindPalindrome.hpp"
-
 // There should be at least one test per FindPalindrome method
 
 TEST_CASE( "Test adding a non-allowable word", "[FindPalindrome]" )
