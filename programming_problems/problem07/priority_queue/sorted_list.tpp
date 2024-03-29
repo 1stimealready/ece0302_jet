@@ -40,13 +40,45 @@ std::size_t SortedList<T, L>::getLength() const noexcept
 template <typename T, typename L>
 void SortedList<T, L>::insert(const T& item)
 {
-  // TODO
+  bool endOfList = true;
+
+  for (size_t i = 0; i < getLength(); i++) {
+
+    if (item <= getEntry(i)) {
+
+      List<T>::insert(i, item);
+
+      endOfList = false;
+
+      break;
+
+    }
+
+
+  }
+
+  if (endOfList) {
+
+    List<T>::insert(getLength(), item);
+
+  }
 }
 
 template <typename T, typename L>
 void SortedList<T, L>::remove(const T& item)
 {
+  if(isEmpty()) throw std::range_error("empty list in remove");
+  
   // TODO
+  for (size_t i = 0; i < List<T>::getLength(); i++) {
+
+    if (getEntry(i) == item) {
+
+      List<T>::remove(i);
+
+    }
+
+  }
 }
 
 template <typename T, typename L>

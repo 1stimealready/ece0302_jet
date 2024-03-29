@@ -45,9 +45,15 @@ public:
   // set the value of the item at position
   void setEntry(std::size_t position, const T& newValue);
 
+  LinkedList<T> sort(LinkedList<T> list);
+l
 private:
 
   //TODO
+  Node<T> *headPtr;
+  Node<T> *tailPtr;
+
+  size_t length;
   
 };
 

@@ -7,7 +7,7 @@
 // T is any orderable type
 // L must conform to the AbstractList Interface
 template <typename T, typename L>
-class SortedList: public AbstractSortedList<T>
+class SortedList: public AbstractSortedList<T>, private List<T>
 {
 public:
 

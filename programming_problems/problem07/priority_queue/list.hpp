@@ -2,6 +2,7 @@
 #define _LIST_HPP_
 
 #include "abstract_list.hpp"
+#include "Node.hpp"
 
 template <typename T>
 class List: public AbstractList<T>
@@ -44,10 +45,19 @@ public:
   // set the value of the item at position 
   void setEntry(std::size_t position, const T& newValue);
 
+  //Sort function
+  List<T> sort(List<T> list);
+
 private:
 
   //TODO
-  
+  //initialize both points to null, no items in list
+  Node<T> *headPtr;
+  Node<T> *tailPtr;
+
+  size_t length;
+
+
 };
 
 #include "list.tpp"
